@@ -1,0 +1,15 @@
+name: owner-guard
+on:
+  issue_comment:
+    types: [created]
+permissions: read-all
+jobs:
+  guarded:
+    if: ${{ startsWith(github.event.comment.body, '/label') && github.repository_owner == 'open-telemetry' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "GUARDED JOB RAN as ${{ github.repository_owner }}"
+  control:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "owner=${{ github.repository_owner }} repo=${{ github.repository }} event=${{ github.event_name }}"
